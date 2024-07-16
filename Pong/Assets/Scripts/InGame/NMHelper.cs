@@ -31,6 +31,7 @@ public class NMHelper : NetworkBehaviour
     [SerializeField] GameObject pausePanel;
     [SyncVar(hook = nameof(ChangeTimeScale)), HideInInspector]
     public bool isPaused = false;
+    private int pauseIndex = -1;
 
     private int playerIndex; // 0 -> player1, 1 -> player2
 
@@ -55,7 +56,7 @@ public class NMHelper : NetworkBehaviour
 
         // reliable as there are only 2 players; if there are more players we can use 
         // [ClientRpc] from the PongNM class when he adds a player to assign a valid index (numPlayers - 1).
-        playerIndex = isServer ? 0 : 1; 
+        playerIndex = isServer ? 0 : 1;
     }
 
     // this function is only executed on server as the event is launched only on server side
@@ -129,6 +130,33 @@ public class NMHelper : NetworkBehaviour
         Time.timeScale = newValue ? 0 : 1;
 
         if (pausePanel) pausePanel.SetActive(newValue);
+    }
+
+    [Client]
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            ChangePauseValue(playerIndex);
+        }
+    }
+
+    [Command(requiresAuthority = false)]
+    private void ChangePauseValue(int id)
+    {
+        if(isPaused)
+        {
+            if (id != pauseIndex) return;
+
+            pauseIndex = -1;
+        }
+        else
+        {
+            pauseIndex = id;
+        }
+
+        isPaused = !isPaused;
+
     }
 
 }

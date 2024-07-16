@@ -55,19 +55,6 @@ public class PongNM : NetworkManager
     [Server] // declaring [Server] just for safety as "OnServerDisconnect" is only called on server side...
     private void Disconnect() => StopHost();
 
-    public override void Update()
-    {
-        base.Update();
-
-        if(helper && helper.isServer) CheckPause();
-    }
-
-    [Server]
-    private void CheckPause()
-    {
-        if (Input.GetKeyUp(KeyCode.Escape)) helper.isPaused = !helper.isPaused;
-    }
-
     /* USED WHEN THERE ARE MORE PLAYERS
     *
     * [ClientRpc]

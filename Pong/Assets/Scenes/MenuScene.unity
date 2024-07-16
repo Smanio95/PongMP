@@ -455,11 +455,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1578549523}
         m_TargetAssemblyTypeName: StartUI, Assembly-CSharp
-        m_MethodName: LimitedConnect
-        m_Mode: 2
+        m_MethodName: Connect
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 1519186328}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1694,7 +1694,6 @@ MonoBehaviour:
   evaluationMethod: 0
   evaluationInterval: 3
   timeInterpolationGui: 0
-  ballPref: {fileID: 4271280295985451024, guid: 4f78dad2e5414794ba259dc4091b098b, type: 3}
 --- !u!114 &1578549523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1707,7 +1706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d6ad7514e807940b87df045278a8a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messageWaitTime: 3
+  defaultAddress: localhost
 --- !u!1 &1759281337
 GameObject:
   m_ObjectHideFlags: 0
