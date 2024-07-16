@@ -27,7 +27,12 @@ public class NMHelper : NetworkBehaviour
     [Header("WinCond")]
     [SerializeField] int maxPoints = 5;
 
-    public int PlayerIndex { get; set; } // 0 - player1, 1 - player2
+    [Header("Pause")]
+    [SerializeField] GameObject pausePanel;
+    [SyncVar(hook = nameof(ChangeTimeScale)), HideInInspector]
+    public bool isPaused = false;
+
+    private int playerIndex; // 0 -> player1, 1 -> player2
 
     public Ball Ball { get; set; }
 
@@ -44,6 +49,15 @@ public class NMHelper : NetworkBehaviour
         Ball.OnScore -= OnScore;
     }
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        // reliable as there are only 2 players; if there are more players we can use 
+        // [ClientRpc] from the PongNM class when he adds a player to assign a valid index (numPlayers - 1).
+        playerIndex = isServer ? 0 : 1; 
+    }
+
     // this function is only executed on server as the event is launched only on server side
     private void OnScore(bool isLeft)
     {
@@ -56,11 +70,11 @@ public class NMHelper : NetworkBehaviour
             score2++;
         }
 
-        if(score1 >= maxPoints)
+        if (score1 >= maxPoints)
         {
             ShowEndTxt(0);
         }
-        else if(score2 >= maxPoints)
+        else if (score2 >= maxPoints)
         {
             ShowEndTxt(1);
         }
@@ -75,7 +89,7 @@ public class NMHelper : NetworkBehaviour
     {
         winTxt.transform.parent.gameObject.SetActive(true);
 
-        winTxt.text = index == PlayerIndex ? "Hai vinto" : "Hai perso";
+        winTxt.text = index == playerIndex ? "Hai vinto" : "Hai perso";
     }
 
     void UpdateScore1(int _, int newScore)
@@ -92,7 +106,7 @@ public class NMHelper : NetworkBehaviour
     // once the game is over. Nevertheless, as the panel where this button is placed will be
     // deactivated once the button is clicked, it is only fired one time (! the only way to fire 
     // this event simultaneously is to click the button in the exact same frame !)
-    [Command(requiresAuthority = false)]  
+    [Command(requiresAuthority = false)]
     public void ResetGame()
     {
         score1 = score2 = 0;
@@ -108,6 +122,13 @@ public class NMHelper : NetworkBehaviour
         winTxt.transform.parent.gameObject.SetActive(false);
 
         OnRestart?.Invoke();
+    }
+
+    private void ChangeTimeScale(bool oldValue, bool newValue)
+    {
+        Time.timeScale = newValue ? 0 : 1;
+
+        if (pausePanel) pausePanel.SetActive(newValue);
     }
 
 }

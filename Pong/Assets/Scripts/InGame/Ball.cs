@@ -70,8 +70,6 @@ public class Ball : NetworkBehaviour
         rb.velocity = Vector2.zero;
         transform.position = Vector2.zero;
 
-        Debug.Log("im called twice");
-
         Move();
     }
 
