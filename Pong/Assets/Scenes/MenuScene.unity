@@ -1462,7 +1462,7 @@ GameObject:
   - component: {fileID: 1519186331}
   - component: {fileID: 1519186330}
   m_Layer: 5
-  m_Name: MaxPlayersMsg
+  m_Name: CommunicationsMsg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1707,6 +1707,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultAddress: localhost
+  commTxt: {fileID: 1519186330}
+  cannotConnectString: Could not connect to the server. This may be caused by max
+    N of players reached or there is not an active server.
+  hostExcString: Host is already present at this address!
+  waitTime: 5
 --- !u!1 &1759281337
 GameObject:
   m_ObjectHideFlags: 0

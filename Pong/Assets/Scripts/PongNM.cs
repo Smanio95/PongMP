@@ -34,9 +34,6 @@ public class PongNM : NetworkManager
         helper.Ball = ballSpawn.GetComponent<Ball>();
 
         NetworkServer.Spawn(ballSpawn, conn);
-
-        // USED WHEN THERE ARE MORE PLAYERS
-        // UpdatePlayerIndex();
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
@@ -55,14 +52,14 @@ public class PongNM : NetworkManager
     [Server] // declaring [Server] just for safety as "OnServerDisconnect" is only called on server side...
     private void Disconnect() => StopHost();
 
-    /* USED WHEN THERE ARE MORE PLAYERS
-    *
-    * [ClientRpc]
-    * private void UpdatePlayerIndex()
-    * {
-    *     helper.PlayerIndex = numPlayers - 1;
-    * }
-    * 
-    */
+    public delegate void Disconnected();
+    public static Disconnected OnDisconnected;
+
+    public override void OnClientDisconnect()
+    {
+        base.OnClientDisconnect();
+
+        OnDisconnected?.Invoke();
+    }
 
 }

@@ -55,7 +55,7 @@ public class NMHelper : NetworkBehaviour
         base.OnStartClient();
 
         // reliable as there are only 2 players; if there are more players we can use 
-        // [ClientRpc] from the PongNM class when he adds a player to assign a valid index (numPlayers - 1).
+        // [TargetRpc] from the PongNM class when he adds a player to assign a valid index (numPlayers - 1).
         playerIndex = isServer ? 0 : 1;
     }
 
